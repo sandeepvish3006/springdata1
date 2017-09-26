@@ -1,5 +1,7 @@
 package springdata1.dao;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,5 +23,11 @@ public interface UserRepository extends CrudRepository<User, Long>{
 	@Modifying
 	@Query("update User u set u.name = ? where u.email = ?")
 	int updateByEmail(@Param("name") String name, @Param("email") String email);
+	
+	@Modifying
+	@Transactional
+	@Query("delete from User where email=?")
+	void deleteByEmail(String email);
+	
 
 }

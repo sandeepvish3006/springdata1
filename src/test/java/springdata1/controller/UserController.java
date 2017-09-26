@@ -56,6 +56,11 @@ public class UserController {
 	@GetMapping("/updateByEmail")
 	public @ResponseBody int updateByEmail(@RequestParam String name, @RequestParam String email){
 		return userRepository.updateByEmail(name,email);
+	}
+	
+	@GetMapping("deleteByEmail")
+	public @ResponseBody void deleteByEmail(@RequestParam String email){
 		
+		userRepository.deleteByEmail(email);
 	}
 }
