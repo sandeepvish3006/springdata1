@@ -3,12 +3,15 @@ package springdata1.controller;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import springdata1.dao.UserRepository;
 import springdata1.model.User;
@@ -19,10 +22,10 @@ public class UserController {
 
 	@Autowired
 	UserRepository userRepository;
-
-	@GetMapping
+	
 	@RequestMapping("/add")
 	public @ResponseBody String addUser(@RequestParam String name, @RequestParam String email) {
+	
 		User user = new User();
 		user.setName(name);
 		user.setEmail(email);
@@ -62,5 +65,17 @@ public class UserController {
 	public @ResponseBody void deleteByEmail(@RequestParam String email){
 		
 		userRepository.deleteByEmail(email);
+	}
+	
+	@GetMapping("/emailAndName")
+	public @ResponseBody Iterable<User> findByNameAndEmail(@RequestParam String name, @RequestParam String email){
+		
+		return userRepository.findByNameAndEmail(name,email);
+	}
+	
+	@GetMapping("/emailAndName")
+	public @ResponseBody Iterable<User> findByAndSort(@RequestParam String name, @RequestParam String email){
+		
+		return userRepository.findByAndSort(name, new Sort("name"));
 	}
 }

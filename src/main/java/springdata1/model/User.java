@@ -4,21 +4,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="Spring_Data") // This tells Hibernate to make a table out of this class
-@NamedQuery(name = "User.findByEmail", query = "select u from User u where u.email = ?")
+@Table(name = "Spring_Data") // This tells Hibernate to make a table out of this
+								// class
+@NamedQueries({ 
+	@NamedQuery(name = "User.findByEmail", query = "select u from User u where u.email = ?"),
+	@NamedQuery(name = "User.findByNameAndEmail", query = "select u from User u where u.name = ? and u.email=?") 
+	
+})
 
 public class User {
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Integer id;
 
-    private String name;
+	private String name;
 
-    private String email;
+	private String email;
 
 	public Integer getId() {
 		return id;
@@ -43,6 +49,5 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 }
