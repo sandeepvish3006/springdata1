@@ -1,27 +1,26 @@
 package springdata1.controller;
 
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
+import springdata1.dao.TestRepo;
 import springdata1.dao.UserRepository;
 import springdata1.model.User;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	TestRepo testRepo;
 	
 	@RequestMapping("/add")
 	public @ResponseBody String addUser(@RequestParam String name, @RequestParam String email) {
@@ -54,8 +53,6 @@ public class UserController {
 		return userRepository.findByNameOrEmail(name, email);
 	}
 	
-	@Modifying
-	@Transactional
 	@GetMapping("/updateByEmail")
 	public @ResponseBody int updateByEmail(@RequestParam String name, @RequestParam String email){
 		return userRepository.updateByEmail(name,email);
@@ -73,9 +70,10 @@ public class UserController {
 		return userRepository.findByNameAndEmail(name,email);
 	}
 	
-	@GetMapping("/emailAndName")
-	public @ResponseBody Iterable<User> findByAndSort(@RequestParam String name, @RequestParam String email){
+	@GetMapping("/email")
+	public @ResponseBody Iterable<User> findByName1(@RequestParam String email){
 		
-		return userRepository.findByAndSort(name, new Sort("name"));
+		return testRepo.findByEmail(email);
 	}
+	
 }

@@ -30,6 +30,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	
 	// update on the basis of email
 	@Modifying
+	@Transactional
 	@Query("update User u set u.name = ? where u.email = ?")
 	int updateByEmail(@Param("name") String name, @Param("email") String email);
 	
